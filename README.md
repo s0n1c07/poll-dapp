@@ -23,7 +23,7 @@ A decentralized application (DApp) that allows users to create and participate i
 - **Leaderboard**: Polls are ranked on a leaderboard based on the number of votes they receive.
 
 ## Tech Stack
-- **Smart Contract**: Solidity, Hardhat
+- **Smart Contract**: Solidity
 - **Frontend**: React, ethers.js
 - **Styling**: TailwindCSS
 - **Notifications**: React Toastify
