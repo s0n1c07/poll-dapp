@@ -21,6 +21,7 @@ A decentralized application (DApp) that allows users to create and participate i
 - **User Tagging**: Polls created by the user are labeled as “Created by you.”
 - **Search Filter**: Easily find polls using the keyword-based search bar.
 - **Leaderboard**: Polls are ranked on a leaderboard based on the number of votes they receive.
+- **Disconnect**: connected wallet will be disconnected.
 
 ## Tech Stack
 - **Smart Contract**: Solidity
