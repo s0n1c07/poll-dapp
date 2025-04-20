@@ -14,6 +14,7 @@ function App() {
   const [contract, setContract] = useState(null);
   const [polls, setPolls] = useState([]);
   const [leaderboard, setLeaderboard] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [voteLoading, setvoteLoading] = useState(false);
   const [addloading, setaddLoading] = useState(false);
   const [newPollQuestion, setNewPollQuestion] = useState("");
@@ -21,6 +22,7 @@ function App() {
   const [newPollDuration, setNewPollDuration] = useState(60);
   const [owner, setOwner] = useState("");
   const [voted, setvoted] = useState(null);
+
   async function connectWallet() {
     try {
       const accounts = await window.ethereum.request({
@@ -28,7 +30,7 @@ function App() {
       });
       const account = accounts[0];
       setAccount(account);
-
+      toast.success("Wallet connected successfully!");
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
 
@@ -67,8 +69,14 @@ function App() {
       console.error("Error resetting polls:", error);
     }
   }
+  function disconnectWallet() {
+    setAccount("");
+    setContract(null);
+    toast.info("Wallet disconnected.");
+  }
 
   const loadPolls = async (pollContract, user) => {
+    setLoading(true);
     try {
       const count = await pollContract.pollCount();
       const pollData = [];
@@ -102,9 +110,11 @@ function App() {
     } catch (err) {
       console.error("Error loading polls:", err);
     }
+    setLoading(false);
   };
 
   const loadLeaderboard = async (pollContract) => {
+    setLoading(true);
     try {
       const count = await pollContract.pollCount();
       const leaderboardData = [];
@@ -126,6 +136,7 @@ function App() {
     } catch (err) {
       console.error("Error loading leaderboard:", err);
     }
+    setLoading(false);
   };
 
   async function createPoll(e) {
@@ -268,6 +279,11 @@ function App() {
     <div className="App">
       <ToastContainer />
       <header className="App-header">
+        {account && (
+          <button onClick={disconnectWallet} className="disconnect-top-button">
+            Disconnect
+          </button>
+        )}
         <h1>DeFi Poll DApp </h1>
         <p>
           Create and participate in polls on the blockchain{" "}
@@ -370,7 +386,9 @@ function App() {
           {/* <div className="left-panel"> */}
           <section className="leaderboard">
             <h2>Leaderboard</h2>
-            {leaderboard.length === 0 ? (
+            {loading ? (
+              <div className="loading-spinner"></div>
+            ) : leaderboard.length === 0 ? (
               <p>No polls available.</p>
             ) : (
               <div className="leaderboard-grid">
@@ -398,8 +416,6 @@ function App() {
                         {poll.totalVotes} votes
                       </span>
                     </h3>
-
-                    {/* <p>Total Votes: {poll.totalVotes}</p> */}
                   </div>
                 ))}
               </div>
@@ -410,6 +426,7 @@ function App() {
         <div className="right-panel">
           <section className="polls">
             <h2>All Polls</h2>
+
             <input
               type="text"
               placeholder="Search polls by question..."
@@ -417,8 +434,9 @@ function App() {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="search-bar"
             />
-
-            {polls.length === 0 ? (
+            {loading ? (
+              <div className="loading-spinner"></div>
+            ) : polls.length === 0 ? (
               <p>No polls available.</p>
             ) : (
               <div className="polls-grid">
@@ -488,10 +506,13 @@ function App() {
                                     setvoted(idx);
                                   }}
                                 >
-                                  Vote{" "}
-                                  {voteLoading && voted === idx && (
-                                    <div className="spinner small"></div>
-                                  )}
+                                  vote
+                                  {/* Vote{" "}
+                                  {voteLoading && voted === idx 
+                                  // && (
+                                  //   <div className="spinner small"></div>
+                                  // )
+                                  } */}
                                 </button>
                               )}
                           </div>

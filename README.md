@@ -13,7 +13,7 @@ A decentralized application (DApp) that allows users to create and participate i
 
 ### Frontend (React + Ethers.js)
 - **Created Time Display**: Shows how long ago a poll was created (e.g., "2 hours ago").
-- **Loading Spinner**: Indicates when data is being fetched from the blockchain.
+- **Loading Spinner**: Indicates when data is being fetched for All Polls and Leaderboard.
 - **Vote Feedback**: After voting, the user sees their selected vote.
 - **Vote Button Control**: Automatically disables the vote button if the user has already voted.
 - **Dark/Light Mode**: Toggle between light and dark themes.

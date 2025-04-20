@@ -352,4 +352,103 @@ body.dark .leaderboard {
 body.dark .leaderboard-card {
   background: #2c2c2c;
 }
+.leaderboard {
+  margin-top: 40px;
+  padding: 20px;
+  background: #f0f2f5;
+  border-radius: 12px;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05);
+}
 
+body.dark .leaderboard {
+  background: #1a1a1a;
+}
+
+.leaderboard-grid {
+  max-height: 400px; /* set max height for vertical slider */
+  overflow-y: auto; /* enable vertical scroll */
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding-right: 10px; /* space for scrollbar */
+  scroll-behavior: smooth;
+}
+
+/* each poll card */
+.leaderboard-card {
+  background: white;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  text-align: left;
+}
+
+body.dark .leaderboard-card {
+  background: #2c2c2c;
+}
+
+/* optional prettier vertical scrollbar */
+.leaderboard-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.leaderboard-grid::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.leaderboard-grid::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.leaderboard-grid::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+/* .disconnect-button {
+  background: #ff7675;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  margin-top: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.disconnect-button:hover {
+  background: #d63031;
+} */
+.disconnect-top-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ffcccc; /* Light red */
+  color: #d63031; /* Deeper red text */
+  border: none;
+  padding: 8px 14px;
+  font-weight: bold;
+  font-size: 0.9em;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
+}
+
+.disconnect-top-button:hover {
+  background: #ff9999;
+  color: #c0392b;
+}
+
+.loading-spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #6c5ce7;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
