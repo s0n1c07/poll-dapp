@@ -21,7 +21,7 @@ function App() {
   const [newPollOptions, setNewPollOptions] = useState(["", ""]);
   const [newPollDuration, setNewPollDuration] = useState(60);
   const [owner, setOwner] = useState("");
-  const [voted, setvoted] = useState(null);
+  const [voted, setvoted] = useState(false);
 
   async function connectWallet() {
     try {
@@ -176,14 +176,14 @@ function App() {
   async function vote(pollId, optionIndex) {
     try {
       if (!contract) return;
-      setvoteLoading(true);
+      // setvoteLoading(true);
       const tx = await contract.vote(pollId, optionIndex);
       await tx.wait();
       await loadPolls(contract, account);
-      setvoteLoading(false);
+      // setvoteLoading(false);
       toast.success("Vote cast successfully!");
     } catch (error) {
-      setvoteLoading(false);
+      // setvoteLoading(false);
       toast.error("Error voting: " + error.message);
     }
   }
@@ -253,9 +253,9 @@ function App() {
         setOwner(ownerAddress);
         await loadPolls(pollContract, userAddress);
         await loadLeaderboard(pollContract);
-        // setLoading(false);
+        setLoading(false);
       } else {
-        // setLoading(false);
+        setLoading(false);
       }
     };
 
@@ -503,16 +503,13 @@ function App() {
                                   className="vote-button"
                                   onClick={() => {
                                     vote(poll.id, idx);
-                                    setvoted(idx);
+                                    // setvoted(idx);
                                   }}
                                 >
-                                  vote
-                                  {/* Vote{" "}
-                                  {voteLoading && voted === idx 
-                                  // && (
-                                  //   <div className="spinner small"></div>
-                                  // )
-                                  } */}
+                                  Vote{" "}
+                                  {voteLoading && voted === idx && (
+                                    <div className="spinner small"></div>
+                                  )}
                                 </button>
                               )}
                           </div>
