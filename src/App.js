@@ -21,7 +21,7 @@ function App() {
   const [newPollOptions, setNewPollOptions] = useState(["", ""]);
   const [newPollDuration, setNewPollDuration] = useState(60);
   const [owner, setOwner] = useState("");
-  const [voted, setvoted] = useState(false);
+  const [voted, setvoted] = useState(null);
 
   async function connectWallet() {
     try {
@@ -474,6 +474,8 @@ function App() {
                       <p className="poll-meta">
                         Ends: {new Date(poll.deadline * 1000).toLocaleString()}
                       </p>
+                      
+
                       <div className="options">
                         {poll.options.map((option, idx) => (
                           <div key={idx} className="option">
@@ -503,13 +505,13 @@ function App() {
                                   className="vote-button"
                                   onClick={() => {
                                     vote(poll.id, idx);
-                                    // setvoted(idx);
+                                    setvoted(idx);
                                   }}
                                 >
                                   Vote{" "}
-                                  {voteLoading && voted === idx && (
+                                  {/* {voteLoading && voted === idx && (
                                     <div className="spinner small"></div>
-                                  )}
+                                  )} */}
                                 </button>
                               )}
                           </div>
