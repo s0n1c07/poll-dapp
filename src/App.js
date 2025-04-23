@@ -564,35 +564,114 @@ function App() {
               </div>
             )}
           </section>
-          <section className="votes-graph">
-  <h2>Polls Statistics</h2>
-  {loading ? (
-    <div className="loading-spinner"></div>
-  ) : polls.length === 0 ? (
-    <p>No polls available.</p>
-  ) : (
-    <div className="fade-in">
-      <ResponsiveContainer width="100%" height={300}>
-        <LineChart
-          data={polls.map(p => ({
-            name: p.question.length > 15 ? p.question.slice(0, 15) + "..." : p.question,
-            votes: p.totalVotes
-          }))}
-          margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
-        >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis allowDecimals={false} />
-          <Tooltip />
-          <Line type="monotone" dataKey="votes" stroke="#8884d8" />
-        </LineChart>
-      </ResponsiveContainer>
-    </div>
-  )}
-</section>
+          {/* <section className="votes-graph">
+            <h2>Polls Statistics</h2>
+            {loading ? (
+              <div className="loading-spinner"></div>
+            ) : polls.length === 0 ? (
+              <p>No polls available.</p>
+            ) : (
+              <div className="fade-in">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={polls.map((p) => ({
+                      name:
+                        p.question.length > 15
+                          ? p.question.slice(0, 15) + "..."
+                          : p.question,
+                      votes: p.totalVotes,
+                    }))}
+                    margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: darkMode ? "#fff" : "#000" }}
+                    />
+                    <YAxis
+                      allowDecimals={false}
+                      tick={{ fill: darkMode ? "#fff" : "#000" }}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: darkMode ? "#333" : "#fff",
+                        color: darkMode ? "#fff" : "#000",
+                        borderColor: darkMode ? "#666" : "#ccc",
+                      }}
+                      itemStyle={{
+                        color: darkMode ? "#fff" : "#000",
+                      }}
+                      labelStyle={{ color: darkMode ? "#fff" : "#000" }}
+                    />
 
+                    <Line type="monotone" dataKey="votes" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </section> */}
 
           {/* <section className="leaderboard"> */}
+          <section
+            className="votes-graph"
+            style={{
+              backgroundColor: darkMode ? "#1e1e1e" : "#fff",
+              color: darkMode ? "#fff" : "#000",
+              padding: "1rem",
+              borderRadius: "10px",
+              boxShadow: darkMode
+                ? "0 0 10px rgba(255, 255, 255, 0.1)"
+                : "0 0 10px rgba(0, 0, 0, 0.1)",
+              transition: "all 0.3s ease",
+            }}
+          >
+            <h2 style={{ color: darkMode ? "#fff" : "#000" }}>
+              Polls Statistics
+            </h2>
+            {loading ? (
+              <div className="loading-spinner"></div>
+            ) : polls.length === 0 ? (
+              <p>No polls available.</p>
+            ) : (
+              <div className="fade-in">
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart
+                    data={polls.map((p) => ({
+                      name:
+                        p.question.length > 15
+                          ? p.question.slice(0, 15) + "..."
+                          : p.question,
+                      votes: p.totalVotes,
+                    }))}
+                    margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      stroke={darkMode ? "#555" : "#ccc"}
+                    />
+                    <XAxis
+                      dataKey="name"
+                      tick={{ fill: darkMode ? "#fff" : "#000" }}
+                    />
+                    <YAxis
+                      allowDecimals={false}
+                      tick={{ fill: darkMode ? "#fff" : "#000" }}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: darkMode ? "#333" : "#fff",
+                        color: darkMode ? "#fff" : "#000",
+                        borderColor: darkMode ? "#666" : "#ccc",
+                      }}
+                      itemStyle={{ color: darkMode ? "#fff" : "#000" }}
+                      labelStyle={{ color: darkMode ? "#fff" : "#000" }}
+                    />
+                    <Line type="monotone" dataKey="votes" stroke="#8884d8" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            )}
+          </section>
 
           {/* </section> */}
         </div>
