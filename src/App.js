@@ -5,8 +5,17 @@ import "./App.css";
 import PollDAppABI from "./PollDAppABI.json";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-const CONTRACT_ADDRESS = "0x02320345798052943184A062138d54A2398CcFe4";
+const CONTRACT_ADDRESS = "0x2cfed0AEfafB1798559F26f2A947A1a61d2d57D1";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -474,7 +483,12 @@ function App() {
                       <p className="poll-meta">
                         Ends: {new Date(poll.deadline * 1000).toLocaleString()}
                       </p>
-                      
+                      {/* <p style={{ fontSize: "12px", color: "gray" }}>
+                        Active: {String(poll.active)} | Voted:{" "}
+                        {String(poll.hasVoted)} | Deadline:{" "}
+                        {new Date(poll.deadline * 1000).toLocaleString()} | Now:{" "}
+                        {new Date().toLocaleString()}
+                      </p> */}
 
                       <div className="options">
                         {poll.options.map((option, idx) => (
@@ -503,10 +517,10 @@ function App() {
                               poll.deadline * 1000 > Date.now() && (
                                 <button
                                   className="vote-button"
-                                  onClick={() => {
-                                    vote(poll.id, idx);
-                                    setvoted(idx);
-                                  }}
+                                  onClick={
+                                    () => vote(poll.id, idx)
+                                    // setvoted(idx);
+                                  }
                                 >
                                   Vote{" "}
                                   {/* {voteLoading && voted === idx && (
@@ -550,6 +564,33 @@ function App() {
               </div>
             )}
           </section>
+          <section className="votes-graph">
+  <h2>Polls Statistics</h2>
+  {loading ? (
+    <div className="loading-spinner"></div>
+  ) : polls.length === 0 ? (
+    <p>No polls available.</p>
+  ) : (
+    <div className="fade-in">
+      <ResponsiveContainer width="100%" height={300}>
+        <LineChart
+          data={polls.map(p => ({
+            name: p.question.length > 15 ? p.question.slice(0, 15) + "..." : p.question,
+            votes: p.totalVotes
+          }))}
+          margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis allowDecimals={false} />
+          <Tooltip />
+          <Line type="monotone" dataKey="votes" stroke="#8884d8" />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  )}
+</section>
+
 
           {/* <section className="leaderboard"> */}
 
