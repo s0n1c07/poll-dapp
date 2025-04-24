@@ -99,7 +99,7 @@ contract DecentraPoll {
         p.totalVotes = 0;
     }
 
-    function pollCount() public view returns (uint) {
+    function pollCount() public view returns (uint256) {
         return polls.length;
     }
 }
