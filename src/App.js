@@ -97,7 +97,8 @@ function App() {
           if (deleted) continue;
           const options = await pollContract.getPollOptions(i);
           const results = await pollContract.getResults(i);
-          const [voted, option] = await pollContract.getUserVote(i, user);
+          let [voted, option] = await pollContract.getUserVote(i, user);
+          const hasVoted = option.toString() !== "0" || totalVotes.toNumber() > 0;
 
           pollData.push({
             id: i,
@@ -107,7 +108,7 @@ function App() {
             totalVotes: totalVotes.toNumber(),
             active,
             deadline: deadline.toNumber(),
-            hasVoted: voted,
+            hasVoted,
             userOption: voted ? option.toNumber() : null,
             creator,
           });
@@ -513,8 +514,9 @@ function App() {
                               ></div>
                             </div>
                             {!poll.hasVoted &&
-                              poll.active &&
-                              poll.deadline * 1000 > Date.now() && (
+                              poll.active 
+                              && poll.deadline * 1000 > Date.now() 
+                              && (
                                 <button
                                   className="vote-button"
                                   onClick={
