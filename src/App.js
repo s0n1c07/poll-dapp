@@ -15,7 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const CONTRACT_ADDRESS = "0x200c11B5Bd0d0988f09991B53cA96B322391D262";
+const CONTRACT_ADDRESS = "0x4bBdF4bC991D215276c4c15Bad4793E7DFC62EdE";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -54,7 +54,7 @@ function App() {
       setOwner(ownerAddress);
 
       await loadPolls(pollContract, account);
-      await loadLeaderboard(pollContract);
+      // await loadLeaderboard(pollContract);
 
       setaddLoading(false);
       return pollContract;
@@ -191,6 +191,7 @@ function App() {
       await tx.wait();
       await loadPolls(contract, account);
       // setvoteLoading(false);
+      await loadLeaderboard(contract);
       toast.success("Vote cast successfully!");
     } catch (error) {
       // setvoteLoading(false);
