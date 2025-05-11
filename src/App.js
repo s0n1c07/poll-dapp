@@ -15,7 +15,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const CONTRACT_ADDRESS = "0x2cfed0AEfafB1798559F26f2A947A1a61d2d57D1";
+const CONTRACT_ADDRESS = "0x200c11B5Bd0d0988f09991B53cA96B322391D262";
 
 function App() {
   const [account, setAccount] = useState("");
@@ -92,13 +92,13 @@ function App() {
 
       for (let i = 0; i < count; i++) {
         try {
-          const [question, active, deadline, totalVotes, creator, deleted] =
+          const [question, active, deadline, totalVotes, creator, deleted ] =
             await pollContract.getPoll(i);
+            const [hasVoted, userVote] = await pollContract.getUserVote(i, user);
           if (deleted) continue;
           const options = await pollContract.getPollOptions(i);
           const results = await pollContract.getResults(i);
-          let [voted, option] = await pollContract.getUserVote(i, user);
-          const hasVoted = option.toString() !== "0" || totalVotes.toNumber() > 0;
+          
 
           pollData.push({
             id: i,
@@ -109,7 +109,7 @@ function App() {
             active,
             deadline: deadline.toNumber(),
             hasVoted,
-            userOption: voted ? option.toNumber() : null,
+            userOption: hasVoted ? userVote.toNumber() : null,
             creator,
           });
         } catch (err) {

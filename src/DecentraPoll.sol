@@ -38,7 +38,10 @@ contract DecentraPoll {
     newPoll.deadline = block.timestamp + duration;
     newPoll.active = true;
     newPoll.voteCounts = new uint[](options.length);
+    newPoll.hasVoted[msg.sender] = false;
 }
+
+
 
 
     function getPoll(uint index) public view returns (string memory, bool, uint, uint,address,bool) {
@@ -99,7 +102,10 @@ contract DecentraPoll {
         p.totalVotes = 0;
     }
 
-    function pollCount() public view returns (uint256) {
+    function pollCount() public view returns (uint) {
         return polls.length;
+    }
+    function hasVoted(uint pollId, address user) public view returns (bool) {
+    return polls[pollId].hasVoted[user];
     }
 }
