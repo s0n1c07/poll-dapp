@@ -7,12 +7,12 @@ contract DecentraPoll {
     struct Poll {
         string question;
         string[] options;
-        uint deadline;
+        uint256 deadline;
         bool active;
-        uint[] voteCounts;
-        uint totalVotes;
+        uint256[] voteCounts;
+        uint256 totalVotes;
         mapping(address => bool) hasVoted;
-        mapping(address => uint) votes;
+        mapping(address => uint256) votes;
         address creator;
         bool deleted;
     }
@@ -28,36 +28,69 @@ contract DecentraPoll {
         owner = msg.sender;
     }
 
-    function createPoll(string memory question, string[] memory options, uint duration) public {
-    require(options.length >= 2, "At least 2 options required");
+    function createPoll(
+        string memory question,
+        string[] memory options,
+        uint256 duration
+    ) public {
+        require(options.length >= 2, "At least 2 options required");
 
-    Poll storage newPoll = polls.push();
-    newPoll.creator = msg.sender; // Track who created the poll
-    newPoll.question = question;
-    newPoll.options = options;
-    newPoll.deadline = block.timestamp + duration;
-    newPoll.active = true;
-    newPoll.voteCounts = new uint[](options.length);
-    newPoll.hasVoted[msg.sender] = false;
-}
+        // push a new, empty Poll struct
+        polls.push();
+        Poll storage newPoll = polls[polls.length - 1];
 
-
-
-
-    function getPoll(uint index) public view returns (string memory, bool, uint, uint,address,bool) {
-        Poll storage p = polls[index];
-        return (p.question, p.active, p.deadline, p.totalVotes,p.creator, p.deleted);
+        newPoll.creator = msg.sender;
+        newPoll.question = question;
+        newPoll.options = options;
+        newPoll.deadline = block.timestamp + duration;
+        newPoll.active = true;
+        newPoll.voteCounts = new uint256[](options.length);
+        // ← no hasVoted initialization here!
+        // clear any leftover “voted” flag or stored vote from prior polls
+        newPoll.hasVoted[msg.sender] = false;
+        newPoll.votes[msg.sender] = 0;
     }
 
-    function getPollOptions(uint index) public view returns (string[] memory) {
+    function getPoll(uint256 index)
+        public
+        view
+        returns (
+            string memory,
+            bool,
+            uint256,
+            uint256,
+            address,
+            bool
+        )
+    {
+        Poll storage p = polls[index];
+        return (
+            p.question,
+            p.active,
+            p.deadline,
+            p.totalVotes,
+            p.creator,
+            p.deleted
+        );
+    }
+
+    function getPollOptions(uint256 index)
+        public
+        view
+        returns (string[] memory)
+    {
         return polls[index].options;
     }
 
-    function getResults(uint index) public view returns (uint[] memory) {
+    function getResults(uint256 index) public view returns (uint256[] memory) {
         return polls[index].voteCounts;
     }
 
-    function getUserVote(uint index, address user) public view returns (bool, uint) {
+    function getUserVote(uint256 index, address user)
+        public
+        view
+        returns (bool, uint256)
+    {
         Poll storage p = polls[index];
         if (p.hasVoted[user]) {
             return (true, p.votes[user]);
@@ -65,7 +98,7 @@ contract DecentraPoll {
         return (false, 0);
     }
 
-    function vote(uint index, uint option) public {
+    function vote(uint256 index, uint256 option) public {
         Poll storage p = polls[index];
         require(p.active, "Poll inactive");
         require(block.timestamp <= p.deadline, "Poll ended");
@@ -78,34 +111,42 @@ contract DecentraPoll {
         p.votes[msg.sender] = option;
     }
 
-    function deactivatePoll(uint _pollId) public {
-        require(msg.sender == polls[_pollId].creator, "Only creator can deactivate");
+    function deactivatePoll(uint256 _pollId) public {
+        require(
+            msg.sender == polls[_pollId].creator,
+            "Only creator can deactivate"
+        );
         polls[_pollId].active = false;
     }
 
-    function deletePoll(uint _pollId) public {
-        require(msg.sender == polls[_pollId].creator, "Only creator can delete");
+    function deletePoll(uint256 _pollId) public {
+        require(
+            msg.sender == polls[_pollId].creator,
+            "Only creator can delete"
+        );
         polls[_pollId].deleted = true;
     }
-
-
 
     function resetAllPolls() public onlyOwner {
         delete polls;
     }
 
-    function editOptions(uint index, string[] memory newOptions) public onlyOwner {
+    function editOptions(uint256 index, string[] memory newOptions)
+        public
+        onlyOwner
+    {
         require(newOptions.length >= 2, "At least 2 options required");
         Poll storage p = polls[index];
         p.options = newOptions;
-        p.voteCounts = new uint[](newOptions.length);
+        p.voteCounts = new uint256[](newOptions.length);
         p.totalVotes = 0;
     }
 
-    function pollCount() public view returns (uint) {
+    function pollCount() public view returns (uint256) {
         return polls.length;
     }
-    function hasVoted(uint pollId, address user) public view returns (bool) {
-    return polls[pollId].hasVoted[user];
+
+    function hasVoted(uint256 pollId, address user) public view returns (bool) {
+        return polls[pollId].hasVoted[user];
     }
 }
